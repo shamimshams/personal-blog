@@ -70,7 +70,7 @@ class PostResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('title')->searchable()->sortable(),
-                TextColumn::make('summery')->html(),
+                TextColumn::make('summery')->html()->wrap(),
             ])
             ->filters([
                 //

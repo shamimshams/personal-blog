@@ -16,6 +16,7 @@ class HomeController extends Controller
             return Post::query()->with(['tags'])
                 ->published()
                 ->when($posttag, fn ($q, $search) => $q->whereHas('tags', fn ($qry) => $qry->where('slug', $posttag)))
+                ->orderByDesc('id')
                 ->simplePaginate(10);
         });
 

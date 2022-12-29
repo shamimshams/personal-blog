@@ -28,7 +28,7 @@
             <div class="prose max-w-none pt-8 pb-8 dark:prose-dark xl:col-span-2">
                 <p>Hi, my name is Shamsuddoha Majumder(Shamim shams). I am a 12+ year's experienced software engineer based
                     on
-                    dhaka, bangladesh.Throughout his career, I have worked on a variety of technology and languages, like
+                    dhaka, bangladesh.Throughout my career, I have worked on a variety of technology and languages, like
                     php, dotnet, mysql,
                     javascript,python. I also have working
                     experince on basic devops</p>

@@ -11,6 +11,18 @@
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('img/favicon/favicon-16x16.png') }}">
     <link rel="manifest" href="{{ asset('img/favicon/site.webmanifest') }}">
     @yield('meta')
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-MKG0QTG8XT"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+
+        gtag('config', 'G-MKG0QTG8XT');
+    </script>
     @vite(['resources/css/main.css'])
     <script src="//unpkg.com/alpinejs" defer></script>
     @stack('header')

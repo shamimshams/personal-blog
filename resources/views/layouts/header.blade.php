@@ -6,7 +6,7 @@
                 <div class="mr-3">
                     <img src="{{ asset('img/logo.jpeg') }}" alt="{{ config('app.name') }}" class="h-8 w-8 object-contain">
                 </div>
-                <div class="hidden h-6 text-2xl font-semibold sm:block">{{ config('app.name') }}</div>
+                <div class="h-6 text-2xl sm:text-xl font-semibold sm:block">{{ config('app.name') }}</div>
             </div>
         </a>
     </div>
@@ -60,7 +60,7 @@
                     </div>
                     <div class="px-12 py-4">
                         <a class="text-2xl font-bold tracking-widest text-gray-900 dark:text-gray-100"
-                            href="">Tags</a>
+                            href="{{ route('tags') }}">Tags</a>
                     </div>
                     <div class="px-12 py-4">
                         <a class="text-2xl font-bold tracking-widest text-gray-900 dark:text-gray-100"

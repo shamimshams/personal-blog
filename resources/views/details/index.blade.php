@@ -87,7 +87,7 @@
                                     <div class="flex flex-wrap">
                                         @foreach ($article->tags as $tag)
                                             <a class="mr-3 text-sm font-medium uppercase text-gray-500 hover:text-gray-600 dark:hover:text-gray-400"
-                                                href="">{{ $tag->name }}</a>
+                                                href="{{ route('posttag', ['posttag' => $tag->slug]) }}">{{ $tag->name }}</a>
                                         @endforeach
                                     </div>
                                 </li>

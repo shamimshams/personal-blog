@@ -1,3 +1,3 @@
-## About Laravel
+## My Personal Blog
 
-my personal blog
+My Personal Blog using TALL stack and TALL Admin(filament)

@@ -21,6 +21,7 @@ use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
+use FilamentTiptapEditor\TiptapEditor;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
@@ -37,7 +38,7 @@ class PostResource extends Resource
                 Card::make()->schema([
                     TextInput::make('title')->placeholder(__('Title'))->required(),
                     RichEditor::make('summery'),
-                    RichEditor::make('body'),
+                    TiptapEditor::make('body'),
                 ])->columnSpan(2),
                 Card::make()->schema([
                     FileUpload::make('featured_image')->image()->maxSize(2000),

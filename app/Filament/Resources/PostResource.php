@@ -66,12 +66,19 @@ class PostResource extends Resource
             ])->columns(3);
     }
 
+    public static function getEloquentQuery(): Builder
+    {
+        return static::getModel()::query()->orderByDesc('id');
+    }
+
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
                 TextColumn::make('title')->searchable()->sortable(),
                 TextColumn::make('summery')->html()->wrap(),
+                TextColumn::make('published_at')->dateTime('d M, Y H:i:s A')->sortable(),
+                TextColumn::make('created_at')->dateTime('d M, Y H:i:s A')->sortable()
             ])
             ->filters([
                 //

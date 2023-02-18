@@ -6,6 +6,11 @@
             @if (!$value)
                 @continue
             @endif
+
+            @php
+             $value = is_array($value) ? implode(',', $value) : $value;
+            @endphp
+
             <meta name="{{ $key }}" content="{{ $value }}" />
         @endforeach
     @endforeach

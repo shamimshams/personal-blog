@@ -53,6 +53,7 @@ class PostResource extends Resource
                 ])->columnSpan(1),
 
                 Repeater::make('meta')->label(__('SEO Settings'))->schema([
+                    TagsInput::make('keywords'),
                     TextInput::make('title')->placeholder(__('Meta Title')),
                     Textarea::make('description')->placeholder(__('Meta Description'))->rows(3),
                     TextInput::make('canonical_link')->placeholder(__('Canonocal Description'))->url(),

@@ -12,7 +12,7 @@
     <link rel="manifest" href="{{ asset('img/favicon/site.webmanifest') }}">
     @yield('meta')
     <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-MKG0QTG8XT"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-G5MZEG7H68"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
 
@@ -21,7 +21,7 @@
         }
         gtag('js', new Date());
 
-        gtag('config', 'G-MKG0QTG8XT');
+        gtag('config', 'G-G5MZEG7H68');
     </script>
     @vite(['resources/css/main.css'])
     <script src="//unpkg.com/alpinejs" defer></script>

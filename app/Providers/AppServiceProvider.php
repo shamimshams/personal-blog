@@ -28,10 +28,5 @@ class AppServiceProvider extends ServiceProvider
         if ($this->app->environment('production')) {
             URL::forceScheme('https');
         }
-
-        Filament::serving(function () {
-            // Using Vite
-            Filament::registerViteTheme('resources/css/app.css');
-        });
     }
 }

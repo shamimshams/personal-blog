@@ -3,10 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\PostResource\Pages;
-use App\Filament\Resources\PostResource\RelationManagers;
 use App\Models\Post;
-use Filament\Forms;
-use Filament\Forms\Components\Card;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Radio;
@@ -16,9 +13,10 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TagsInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
-use Filament\Resources\Form;
+use Filament\Forms;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Resources\Table;
+use Filament\Tables\Table;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use FilamentTiptapEditor\TiptapEditor;
@@ -29,18 +27,20 @@ class PostResource extends Resource
 {
     protected static ?string $model = Post::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationIcon = 'heroicon-o-document-check';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Card::make()->schema([
+                Forms\Components\Section::make()->schema([
                     TextInput::make('title')->placeholder(__('Title'))->required(),
-                    RichEditor::make('summery'),
-                    TiptapEditor::make('body'),
+                    RichEditor::make('summery')->required(),
+                    TiptapEditor::make('body')
+                        ->floatingMenuTools(['grid-builder', 'media', 'link',  'code-block'])
+                        ->required(),
                 ])->columnSpan(2),
-                Card::make()->schema([
+                Forms\Components\Section::make()->schema([
                     FileUpload::make('featured_image')->image()->maxSize(2000),
                     TextInput::make('featured_image_caption')->placeholder(__('Featured Image Caption')),
                     Select::make('tags')->multiple()->relationship('tags', 'name'),
@@ -61,8 +61,6 @@ class PostResource extends Resource
                     ->columnSpan(2)
                     ->defaultItems(1)
                     ->maxItems(1)
-                    ->disableItemDeletion()
-                    ->disableItemMovement()
 
             ])->columns(3);
     }

@@ -38,8 +38,8 @@
                     experince on basic devops</p>
                 <p>I love reading books, travelling and exploring new technology. I am also dad of
                     two children.</p>
-                <p>You can contact me on my social accounts or <a class="text-green-500"
-                        href="https://www.fiverr.com/shamimshams" target="_blank">Fiverr</a></p>
+{{--                <p>You can contact me on my social accounts or <a class="text-green-500"--}}
+{{--                        href="https://www.fiverr.com/shamimshams" target="_blank">Fiverr</a></p>--}}
             </div>
         </div>
     </div>

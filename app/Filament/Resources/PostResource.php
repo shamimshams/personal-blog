@@ -22,6 +22,7 @@ use Filament\Tables\Columns\TextColumn;
 use FilamentTiptapEditor\TiptapEditor;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Mohamedsabil83\FilamentFormsTinyeditor\Components\TinyEditor;
 
 class PostResource extends Resource
 {
@@ -36,8 +37,9 @@ class PostResource extends Resource
                 Forms\Components\Section::make()->schema([
                     TextInput::make('title')->placeholder(__('Title'))->required(),
                     RichEditor::make('summery')->required(),
-                    TiptapEditor::make('body')
-                        ->floatingMenuTools(['grid-builder', 'media', 'link',  'code-block'])
+                    TinyEditor::make('body')
+                            ->toolbarSticky(true)
+//                        ->floatingMenuTools(['grid-builder', 'media', 'link',  'code-block'])
                         ->required(),
                 ])->columnSpan(2),
                 Forms\Components\Section::make()->schema([

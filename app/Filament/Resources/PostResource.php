@@ -16,6 +16,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Support\Colors\Color;
 use Filament\Tables\Table;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
@@ -38,8 +39,7 @@ class PostResource extends Resource
                     TextInput::make('title')->placeholder(__('Title'))->required(),
                     RichEditor::make('summery')->required(),
                     TinyEditor::make('body')
-                            ->toolbarSticky(true)
-//                        ->floatingMenuTools(['grid-builder', 'media', 'link',  'code-block'])
+                        ->toolbarSticky(true)
                         ->required(),
                 ])->columnSpan(2),
                 Forms\Components\Section::make()->schema([
@@ -77,7 +77,14 @@ class PostResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('title')->searchable()->sortable(),
-                TextColumn::make('summery')->html()->wrap(),
+                TextColumn::make('summery')->html()->wrap()->limit(100),
+                TextColumn::make('status')
+                    ->badge()
+                    ->getStateUsing(fn($record) => str()->title($record->status))
+                    ->color(fn(string $state): string => match ($state) {
+                        'Draft' => 'gray',
+                        'Publish' => 'success',
+                    }),
                 TextColumn::make('published_at')->dateTime('d M, Y H:i:s A')->sortable(),
                 TextColumn::make('created_at')->dateTime('d M, Y H:i:s A')->sortable()
             ])
@@ -86,6 +93,10 @@ class PostResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\Action::make('previewAction')
+                    ->icon('heroicon-o-eye')
+                    ->label(__('Preview'))
+                    ->url(fn($record) => route('details', ['slug' => $record->slug]))
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),

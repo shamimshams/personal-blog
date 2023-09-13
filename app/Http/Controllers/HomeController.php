@@ -15,7 +15,7 @@ class HomeController extends Controller
         $data['articles'] = Cache::remember('all_articles', 86400, function () use ($posttag) {
             return Post::query()->with(['tags'])
                 ->published()
-                ->when($posttag, fn ($q, $search) => $q->whereHas('tags', fn ($qry) => $qry->where('slug', $posttag)))
+                ->when($posttag, fn($q, $search) => $q->whereHas('tags', fn($qry) => $qry->where('slug', $posttag)))
                 ->orderByDesc('id')
                 ->simplePaginate(10);
         });
@@ -26,7 +26,11 @@ class HomeController extends Controller
 
     function details(string $slug)
     {
-        $data['article'] = Post::query()->with(['tags'])->published()->where('slug', $slug)->firstOrFail();
+        $data['article'] = Post::query()
+            ->with(['tags'])
+            ->when(!auth()->check(), fn($query) => $query->published())
+            ->where('slug', $slug)
+            ->firstOrFail();
         return view('details.index', $data);
     }
 

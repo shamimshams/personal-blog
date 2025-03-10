@@ -7,6 +7,7 @@ use App\Filament\Resources\TransactionResource\RelationManagers;
 use App\Filament\Resources\TransactionResource\Widgets\TransactionSummary;
 use App\Models\AccountHead;
 use App\Models\Transaction;
+use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Radio;
@@ -35,7 +36,7 @@ class TransactionResource extends Resource
             ->schema([
                 Select::make('source')
                     ->label('Source')
-                    ->options(AccountHead::pluck('name', 'id') )
+                    ->options(AccountHead::pluck('name', 'id'))
                     ->required(),
                 Radio::make('type')
                     ->label('Type')
@@ -69,20 +70,54 @@ class TransactionResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('accountHead.name')
-                    ->label('Account Head'),
-                TextColumn::make('transaction_date')->label('Transaction Date'),
+                    ->label('Account Head')
+                    ->searchable(),
+                TextColumn::make('transaction_date')
+                    ->label('Transaction Date')
+                    ->date('d M, Y'),
                 TextColumn::make('amount')
                     ->label('Amount')
                     ->money('BDT')
-                    ->icon(fn($record) => $record->type == 'income' ? 'heroicon-o-chevron-double-up': 'heroicon-o-chevron-double-down')
+                    ->icon(fn($record) => $record->type == 'income' ? 'heroicon-o-chevron-double-up' : 'heroicon-o-chevron-double-down')
                     ->color(fn($record) => $record->type == 'income' ? 'success' : 'danger'),
 
                 TextColumn::make('note')
                     ->limit(50)
+                    ->searchable()
                     ->tooltip(fn($record) => $record->note),
             ])
             ->filters([
-                //
+                Tables\Filters\Filter::make('transaction_date')
+                    ->form([
+                        DatePicker::make('from_date')->label('From')->native(false)->suffixIcon('heroicon-o-calendar'),
+                        DatePicker::make('to_date')->label('To')->native(false)->suffixIcon('heroicon-o-calendar'),
+                    ])->query(function (Builder $query, array $data): Builder {
+                        if(empty($data)) {
+                            return $query;
+                        }
+
+
+                        return $query
+                            ->when(
+                                $data['from_date'],
+                                fn(Builder $query, $date): Builder => $query->whereDate('transaction_date', '>=', $date),
+                            )
+                            ->when(
+                                $data['to_date'],
+                                fn(Builder $query, $date): Builder => $query->whereDate('transaction_date', '<=', $date),
+                            );
+                    })->indicateUsing(function(array $data): array {
+                        $indicators = [];
+                        if($data['from_date'] ?? null) {
+                            $indicators[] = 'From: ' . Carbon::parse($data['from_date'])->format('d M, Y');
+                        }
+
+                         if($data['to_date'] ?? null) {
+                            $indicators[] = 'To: ' . Carbon::parse($data['to_date'])->format('d M, Y');
+                        }
+
+                        return $indicators;
+                    } ),
             ])
             ->actions([
                 Tables\Actions\EditAction::make()->slideOver()->modalWidth('lg'),

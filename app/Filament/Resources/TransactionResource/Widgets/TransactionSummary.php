@@ -6,6 +6,7 @@ use App\Filament\Resources\TransactionResource;
 use App\Filament\Resources\TransactionResource\Pages\ManageTransactions;
 use Filament\Widgets\Concerns\InteractsWithPageTable;
 use Filament\Widgets\StatsOverviewWidget;
+use Illuminate\Support\Number;
 
 class TransactionSummary extends StatsOverviewWidget
 {
@@ -25,31 +26,39 @@ class TransactionSummary extends StatsOverviewWidget
 
     protected function getStats(): array
     {
-        $income = $this->getPageTableQuery()->where('type', 'income')->sum('amount');
+        $bankIncome = (float)$this->getPageTableQuery()->where('type', 'income')->sum('amount');
+        $cashIncome = (float)$this->getPageTableQuery()->where('type', 'cashIncome')->sum('amount');
+        $income = $bankIncome + $cashIncome;
         $expense = $this->getPageTableQuery()->where('type', 'expense')->sum('amount');
         $withdraw = $this->getPageTableQuery()->where('type', 'withdraw')->sum('amount');
 
-        $balance = number_format(($income - $expense), 2);
+        $balance = (($income+$withdraw) - $expense);
         $balanceInBank = $income - $withdraw;
 
+        $cashInHand = max((($withdraw+$cashIncome)-$expense),0);
+
         return [
-            StatsOverviewWidget\Stat::make('Total Income', $income)
+            StatsOverviewWidget\Stat::make('Total Income', Number::currency($income, 'BDT'))
                 ->color('success')
                 ->icon('heroicon-o-banknotes'),
 
-            StatsOverviewWidget\Stat::make('Total Expense', $expense)
+            StatsOverviewWidget\Stat::make('Total Expense', Number::currency($expense, 'BDT'))
                 ->color('danger')
                 ->icon('heroicon-o-banknotes'),
 
-            StatsOverviewWidget\Stat::make('Balance', $balance)
+            StatsOverviewWidget\Stat::make('Balance', Number::currency($balance, 'BDT'))
                 ->color('primary')
                 ->icon('heroicon-o-banknotes'),
 
-            StatsOverviewWidget\Stat::make('Withdraw', $withdraw)
+            StatsOverviewWidget\Stat::make('Withdraw', Number::currency($withdraw, 'BDT'))
                 ->color('primary')
                 ->icon('heroicon-o-banknotes'),
 
-            StatsOverviewWidget\Stat::make('Balance In Bank', $balanceInBank)
+            StatsOverviewWidget\Stat::make('Balance In Bank', Number::currency($balanceInBank, 'BDT'))
+                ->color('primary')
+                ->icon('heroicon-o-banknotes'),
+
+              StatsOverviewWidget\Stat::make('Cash In Hand', Number::currency($cashInHand, 'BDT'))
                 ->color('primary')
                 ->icon('heroicon-o-banknotes'),
         ];

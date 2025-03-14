@@ -42,6 +42,7 @@ class TransactionResource extends Resource
                     ->label('Type')
                     ->options([
                         'income' => 'Income',
+                        'cashIncome' => 'Cash Earn',
                         'expense' => 'Expense',
                         'withdraw' => 'Withdraw',
                     ])
@@ -85,6 +86,8 @@ class TransactionResource extends Resource
                         switch($record->type) {
                             case 'income':
                                 return 'success';
+                            case 'cashIncome':
+                                return 'info';
                             case 'expense':
                                 return 'danger';
                             case 'withdraw':

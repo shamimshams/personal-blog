@@ -27,8 +27,10 @@ class TransactionSummary extends StatsOverviewWidget
     {
         $income = $this->getPageTableQuery()->where('type', 'income')->sum('amount');
         $expense = $this->getPageTableQuery()->where('type', 'expense')->sum('amount');
+        $withdraw = $this->getPageTableQuery()->where('type', 'withdraw')->sum('amount');
 
         $balance = number_format(($income - $expense), 2);
+        $balanceInBank = $income - $withdraw;
 
         return [
             StatsOverviewWidget\Stat::make('Total Income', $income)
@@ -39,7 +41,15 @@ class TransactionSummary extends StatsOverviewWidget
                 ->color('danger')
                 ->icon('heroicon-o-banknotes'),
 
-              StatsOverviewWidget\Stat::make('Balance', $balance)
+            StatsOverviewWidget\Stat::make('Balance', $balance)
+                ->color('primary')
+                ->icon('heroicon-o-banknotes'),
+
+            StatsOverviewWidget\Stat::make('Withdraw', $withdraw)
+                ->color('primary')
+                ->icon('heroicon-o-banknotes'),
+
+            StatsOverviewWidget\Stat::make('Balance In Bank', $balanceInBank)
                 ->color('primary')
                 ->icon('heroicon-o-banknotes'),
         ];

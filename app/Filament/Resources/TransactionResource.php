@@ -43,8 +43,10 @@ class TransactionResource extends Resource
                     ->options([
                         'income' => 'Income',
                         'expense' => 'Expense',
+                        'withdraw' => 'Withdraw',
                     ])
-                    ->required(),
+                    ->required()
+                    ->inline(),
 
                 TextInput::make('amount')
                     ->label('Amount')

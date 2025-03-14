@@ -81,8 +81,17 @@ class TransactionResource extends Resource
                     ->label('Amount')
                     ->money('BDT')
                     ->icon(fn($record) => $record->type == 'income' ? 'heroicon-o-chevron-double-up' : 'heroicon-o-chevron-double-down')
-                    ->color(fn($record) => $record->type == 'income' ? 'success' : 'danger'),
+                    ->color(function($record) {
+                        switch($record->type) {
+                            case 'income':
+                                return 'success';
+                            case 'expense':
+                                return 'danger';
+                            case 'withdraw':
+                                return 'primary';
+                        };
 
+                    }),
                 TextColumn::make('note')
                     ->limit(50)
                     ->searchable()

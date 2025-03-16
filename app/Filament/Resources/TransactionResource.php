@@ -133,6 +133,7 @@ class TransactionResource extends Resource
                         return $indicators;
                     } ),
             ])
+            ->defaultSort('created_at', 'desc')
             ->actions([
                 Tables\Actions\EditAction::make()->slideOver()->modalWidth('lg'),
                 Tables\Actions\DeleteAction::make(),
